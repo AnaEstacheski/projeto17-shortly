@@ -9,12 +9,13 @@ export async function signUp(req, res) {
             `INSERT INTO users (name, email, password) VALUES ($1, $2, $3);`,
             [name, email, encryptedPass]
         );
+        return res.sendStatus(201);
     } catch (err) {
         console.log(err);
-        res.sendStatus(500);
+        return res.sendStatus(500);
     }
 }
 
 export async function signIn(req, res) {
-    return res.send(200);
+    return res.sendStatus(200);
 }
