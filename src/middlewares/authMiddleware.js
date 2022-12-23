@@ -1,6 +1,7 @@
 import { signUpSchema } from "../models/signUpSchema.js";
 import { connectionDB } from "../database/db.js";
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 
 export async function signUpSchemaValidation(req, res, next) {
     const { name, email, password, confirmPassword } = req.body;
@@ -52,6 +53,19 @@ export async function signInValidation(req, res, next) {
     next();
 }
 
-async function authValidation(req, res, next) {
+export async function authValidation(req, res, next) {
+    const token = req.headers.authorization?.replace("Bearer ", "");
+    if (!token) {
+        return res.sendStatus(401);
+    }
 
+    try {
+        const decoded = jwt.verify(token, process.env.TOKEN_SECRET);
+        console.log(decoded);
+        res.locals.userId = decoded.userId;
+        return next();
+    } catch (err) {
+        console.log(err);
+        res.status(500).send(err.message);
+    }
 }
