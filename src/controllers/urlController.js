@@ -12,7 +12,7 @@ export async function sendShortenedUrl(req, res) {
 
     try {
         await connectionDB.query(
-            `INSERT INTO shortened (url, "shortUrl", "userId") 
+            `INSERT INTO shortened (url, "shorturl", "userId") 
             VALUES ($1, $2, $3);`,
             [url, shortUrl, userId]
         );
