@@ -1,5 +1,6 @@
 import { connectionDB } from "../database/db.js";
 import { nanoid } from "nanoid";
+import * as repository from "../repositories/repository.js";
 
 export async function sendShortenedUrl(req, res) {
     const { url } = req.body;
@@ -37,3 +38,16 @@ export async function getUrl(req, res) {
         res.status(500).send(err.message);
     }
 }
+
+export async function redirectUser(req, res) {
+    const { shortUrl } = req.params;
+    try {
+        const url = await repository.getShortenedUrl(shortUrl);
+        return res.redirect(url.rows[0].url);
+    } catch (err) {
+        console.log(err);
+        res.status(500).send(err.message);
+    }
+    return res.sendStatus(200);
+}
+

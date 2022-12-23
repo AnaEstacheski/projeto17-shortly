@@ -5,15 +5,15 @@ import { urlSchema } from "../models/urlSchema.js";
 // Middleware/Validations
 import { authValidation } from "../middlewares/authMiddleware.js";
 import validateSchema from "../middlewares/validateSchema.js";
-import { validateUrl } from "../middlewares/urlMiddleware.js";
+import { validateUrl, validateShortUrl } from "../middlewares/urlMiddleware.js";
 // Controllers
-import { sendShortenedUrl, getUrl } from "../controllers/urlController.js";
+import { sendShortenedUrl, getUrl, redirectUser } from "../controllers/urlController.js";
 
 //Routes
 const router = Router();
 router.post("/urls/shorten", authValidation, validateSchema(urlSchema), sendShortenedUrl);
 router.get("/urls/:id", validateUrl, getUrl);
-router.get("/urls/open/:shortUrl");
+router.get("/urls/open/:shortUrl", validateShortUrl, redirectUser);
 router.delete("/urls/:id");
 
 export default router;
