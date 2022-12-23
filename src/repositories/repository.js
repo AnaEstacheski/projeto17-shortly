@@ -40,3 +40,24 @@ export async function getShortenedUrl(shortUrl) {
     }
     return url;
 }
+
+export async function urlById(urlId) {
+    return connectionDB.query(
+        `SELECT id FROM shortened WHERE id=$1;`,
+        [urlId]
+    );
+}
+
+export async function urlByUser(urlId, userId) {
+    return connectionDB.query(
+        `SELECT id FROM shortened WHERE id=$1 AND "userId"=$2;`,
+        [urlId, userId]
+    );
+}
+
+export async function deleteUrl(urlId) {
+    return connectionDB.query(
+        `DELETE FROM shortened WHERE id=$1`,
+        [urlId]
+    );
+}

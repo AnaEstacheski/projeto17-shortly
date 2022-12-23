@@ -51,3 +51,15 @@ export async function redirectUser(req, res) {
     return res.sendStatus(200);
 }
 
+export async function deleteUrl(req, res) {
+    const { id } = req.params;
+
+    try {
+        await repository.deleteUrl(id);
+        return res.sendStatus(204);
+    } catch (err) {
+        console.log(err);
+        res.status(500).send(err.message);
+    }
+}
+

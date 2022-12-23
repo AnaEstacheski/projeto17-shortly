@@ -1,4 +1,5 @@
 import { connectionDB } from "../database/db.js";
+import * as repository from "../repositories/repository.js";
 
 export async function validateUrl(req, res, next) {
     const { id } = req.params;
@@ -28,6 +29,26 @@ export async function validateShortUrl(req, res, next) {
         );
         if (shortUrlExist.rowCount === 0) {
             return res.sendStatus(404);
+        }
+        return next();
+    } catch (err) {
+        console.log(err);
+        res.status(500).send(err.message);
+    }
+}
+
+export async function validateUrlDelete(req, res, next) {
+    const urlId = req.params.id
+    const { userId } = res.locals;
+
+    try {
+        const shortUrlExist = (await repository.urlById(urlId)).rows[0];
+        if (!shortUrlExist) {
+            return res.sendStatus(404);
+        }
+        const urlUser = (await repository.urlByUser(urlId, userId)).rows[0];
+        if (!urlUser) {
+            return res.sendStatus(401);
         }
         return next();
     } catch (err) {
