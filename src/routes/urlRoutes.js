@@ -1,13 +1,18 @@
 import { Router } from "express";
+
+// Schemas
 import { urlSchema } from "../models/urlSchema.js";
-import validateSchema from "../middlewares/validateSchema.js";
-import { sendShortenedUrl } from "../controllers/urlController.js";
+// Middleware/Validations
 import { authValidation } from "../middlewares/authMiddleware.js";
+import validateSchema from "../middlewares/validateSchema.js";
+import { validateUrl } from "../middlewares/urlMiddleware.js";
+// Controllers
+import { sendShortenedUrl, getUrl } from "../controllers/urlController.js";
 
+//Routes
 const router = Router();
-
 router.post("/urls/shorten", authValidation, validateSchema(urlSchema), sendShortenedUrl);
-router.get("/urls/:id");
+router.get("/urls/:id", validateUrl, getUrl);
 router.get("/urls/open/:shortUrl");
 router.delete("/urls/:id");
 
