@@ -55,8 +55,8 @@ export async function authValidation(req, res, next) {
 
     try {
         const decoded = jwt.verify(token, process.env.TOKEN_SECRET);
-        console.log(decoded);
-        res.locals.userId = decoded.userId;
+        console.log(decoded, "testando");
+        res.locals.userId = decoded.user;
         return next();
     } catch (err) {
         console.log(err);

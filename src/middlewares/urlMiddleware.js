@@ -12,7 +12,7 @@ export async function validateUrl(req, res, next) {
         if (url.rowCount === 0) {
             return res.sendStatus(404);
         }
-        next();
+       return next();
     } catch (err) {
         console.log(err);
         res.status(500).send(err.message);

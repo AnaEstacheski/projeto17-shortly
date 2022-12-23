@@ -63,3 +63,16 @@ export async function deleteUrl(req, res) {
     }
 }
 
+export async function getUserInfo(req, res) {
+    const { userId } = res.locals;
+
+    try {
+        const userInfo = await repository.userInfo(userId);
+        const userUrl = await repository.getUserUrl(userId);
+        console.log(userUrl.rows);
+        return res.sendStatus(200);
+    } catch (err) {
+        console.log(err);
+        res.status(500).send(err.message);
+    }
+}

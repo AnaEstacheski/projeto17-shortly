@@ -61,3 +61,19 @@ export async function deleteUrl(urlId) {
         [urlId]
     );
 }
+
+export async function userInfo(id) {
+    return connectionDB.query(
+    `SELECT * FROM users WHERE id=$1;`,
+    [id]
+   );
+}
+
+export async function getUserUrl(id) {
+    return connectionDB.query(
+    `SELECT url, "shorturl", shortened.id, SUM( CASE WHEN visit IS NULL THEN 0 ELSE visit END) AS "visitCount" FROM shortened
+    LEFT JOIN visits ON visits."shortid"=shortened.id WHERE "userId"=$1
+    GROUP BY shortened.id;`,
+    [id]
+   );
+}
